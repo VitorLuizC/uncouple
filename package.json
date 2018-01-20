@@ -1,0 +1,22 @@
+{
+  "name": "uncouple",
+  "version": "0.0.0",
+  "description": "Uncople object properties and methods.",
+  "main": "dist/uncouple.c.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VitorLuizC/uncouple.git"
+  },
+  "keywords": [
+    "uncouple"
+  ],
+  "author": "Vitor Cavalcanti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VitorLuizC/uncouple/issues"
+  },
+  "homepage": "https://github.com/VitorLuizC/uncouple#readme"
+}
