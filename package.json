@@ -5,9 +5,9 @@
   "main": "dist/uncouple.cjs.js",
   "module": "dist/uncouple.m.js",
   "scripts": {
-    "test": "ava --no-cache",
+    "test": "npm run build && ava --no-cache",
     "build": "bili src/index.js --banner --formats es,cjs",
-    "prepare": "npm run build && npm run test"
+    "prepare": "npm test"
   },
   "repository": {
     "type": "git",
