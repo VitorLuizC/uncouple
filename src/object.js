@@ -1,3 +1,5 @@
-export const entries = Object.entries;
+export { default as entries } from 'object.entries';
 
-export const getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors;
+export { default as assign } from 'object.assign';
+
+export { default as getOwnPropertyDescriptors } from 'object.getownpropertydescriptors';

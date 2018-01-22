@@ -25,5 +25,10 @@
   "devDependencies": {
     "ava": "^0.24.0",
     "bili": "^1.6.5"
+  },
+  "dependencies": {
+    "object.assign": "^4.1.0",
+    "object.entries": "^1.0.4",
+    "object.getownpropertydescriptors": "^2.0.3"
   }
 }

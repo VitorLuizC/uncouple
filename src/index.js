@@ -1,7 +1,10 @@
 import { map, filter, reduce } from './collection';
-import { entries, getOwnPropertyDescriptors } from './object';
+import { assign, entries, getOwnPropertyDescriptors } from './object';
 
-const toProperty = ([ name, descriptor ]) => ({ name, ...descriptor });
+const toProperty = ([ name, descriptor ]) => {
+  const property = assign({}, descriptor, { name });
+  return property;
+};
 
 const getProperties = (object) => {
   const descriptors = getOwnPropertyDescriptors(object);
@@ -15,10 +18,10 @@ const isMethod = (property) => (
   typeof property.value === 'function'
 );
 
-const withMethod = (object, { name, value }) => ({
-  ...object,
-  [name]: Function.call.bind(value)
-});
+const withMethod = (object, { name, value }) => {
+  const result = assign({}, object, { [name]: Function.call.bind(value) });
+  return result;
+};
 
 const uncouple = (object) => {
   const properties = getProperties(object.prototype || object);
