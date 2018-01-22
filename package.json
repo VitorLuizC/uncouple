@@ -1,7 +1,7 @@
 {
   "name": "uncouple",
   "version": "0.1.0",
-  "description": "Uncople object properties and methods.",
+  "description": "Uncouple prototype methods.",
   "main": "dist/uncouple.cjs.js",
   "module": "dist/uncouple.m.js",
   "scripts": {
@@ -14,9 +14,17 @@
     "url": "git+https://github.com/VitorLuizC/uncouple.git"
   },
   "keywords": [
-    "uncouple"
+    "uncouple",
+    "prototype",
+    "duck-typing",
+    "functional",
+    "functional-programming"
   ],
-  "author": "Vitor Cavalcanti",
+  "author": {
+    "url": "https://vitorluizc.github.io/",
+    "name": "Vitor Cavalcanti",
+    "email": "vitorluizc@outlook.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/VitorLuizC/uncouple/issues"
