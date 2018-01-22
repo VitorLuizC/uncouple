@@ -1,5 +1,7 @@
 # Uncouple
 
+[![Build Status][ci-status-badge]][ci-status]
+
 Uncouple prototype methods.
 
 ## Getting Started
@@ -31,3 +33,5 @@ Released under MIT license. You can see it [here][license].
 
 <!-- Links -->
 [license]: ./LICENSE
+[ci-status]: https://travis-ci.org/VitorLuizC/uncouple
+[ci-status-badge]: https://travis-ci.org/VitorLuizC/uncouple.svg?branch=master
