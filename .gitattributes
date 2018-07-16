@@ -2,4 +2,4 @@
 * text=auto eol=lf
 
 # Ignore lockfile diffs.
-package-lock.json -diff
+yarn.lock -diff
