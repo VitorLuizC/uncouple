@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+
+    // Settings for generating type definitions.
+    "strict": true,
+    "declaration": true,
+    "declarationDir": "types/",
+
+    // Settings for module resolution.
+    "module": "es2015",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/"],
+  "exclude": ["dist/", "types/"]
+}

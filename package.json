@@ -1,12 +1,15 @@
 {
   "name": "uncouple",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Uncouple prototype methods.",
   "main": "dist/uncouple.cjs.js",
-  "module": "dist/uncouple.m.js",
+  "types": "types/index.d.ts",
+  "module": "dist/uncouple.es.js",
+  "browser": "dist/uncouple.js",
   "scripts": {
-    "test": "npm run build && ava --no-cache",
-    "build": "bili src/index.js --banner --formats es,cjs",
+    "pretest": "npm run build",
+    "test": "ava --no-cache",
+    "build": "tsc && bili src/index.js --banner --formats es,cjs,umd --js buble",
     "prepare": "npm test"
   },
   "repository": {
@@ -31,12 +34,11 @@
   },
   "homepage": "https://github.com/VitorLuizC/uncouple#readme",
   "devDependencies": {
-    "ava": "^0.24.0",
-    "bili": "^1.6.5"
+    "ava": "^0.25.0",
+    "bili": "^3.1.2",
+    "typescript": "^2.9.2"
   },
   "dependencies": {
-    "object.assign": "^4.1.0",
-    "object.entries": "^1.0.4",
-    "object.getownpropertydescriptors": "^2.0.3"
+    "reconstruct-descriptors": "^0.2.1"
   }
 }

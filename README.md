@@ -18,13 +18,18 @@ Uncouple module provides a function to uncouple all prototype methods.
 ```js
 import uncouple from 'uncouple';
 
-const $Array = uncouple(Array);
-const { hasOwnProperty: has } = uncouple(Object);
+const { hasOwnProperty: has } = uncouple(Object.prototype);
 
-const phrases = document.querySelectorAll('p');
+const o = Object.create(null);
 
-$Array.filter([...items], (p) => has(p, 'type'));
-$Array.map(phrases, (phrase) => phrase.textContent);
+has(o, 'name');
+// => false
+
+// Uses Array methods as functions for any Iterable
+const { filter } = uncouple(Array.prototype);
+
+filter(document.querySelectorAll('*'), (e) => e.tagName === 'LINK');
+// => [ <a href="" />, ... ]
 ```
 
 ## License

@@ -5,8 +5,10 @@ node_modules/
 *.log
 *.log.*
 
-# Distribution files.
+# Generate sources & type definitions.
+src/*.js
 dist/
+types/
 
 # NPM Lockfile.
 package-lock.json
