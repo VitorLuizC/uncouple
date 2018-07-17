@@ -1,11 +1,17 @@
 {
   "name": "uncouple",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Uncouple prototype methods.",
   "main": "dist/uncouple.cjs.js",
   "types": "types/index.d.ts",
   "module": "dist/uncouple.es.js",
   "browser": "dist/uncouple.js",
+  "files": [
+    "dist/",
+    "types/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "pretest": "npm run build",
     "test": "ava --no-cache",
@@ -25,7 +31,7 @@
   ],
   "author": {
     "url": "https://vitorluizc.github.io/",
-    "name": "Vitor Cavalcanti",
+    "name": "Vitor Luiz Cavalcanti",
     "email": "vitorluizc@outlook.com"
   },
   "license": "MIT",
