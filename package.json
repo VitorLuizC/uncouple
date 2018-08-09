@@ -1,11 +1,14 @@
 {
   "name": "uncouple",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Uncouple prototype methods.",
+  "cdn": "dist/uncouple.js",
   "main": "dist/uncouple.cjs.js",
   "types": "types/index.d.ts",
+  "unpkg": "dist/uncouple.js",
   "module": "dist/uncouple.es.js",
-  "browser": "dist/uncouple.js",
+  "jsdelivr": "dist/uncouple.js",
+  "umd:main": "dist/uncouple.js",
   "files": [
     "dist/",
     "types/",
