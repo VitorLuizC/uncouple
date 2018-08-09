@@ -24,11 +24,17 @@ const o = Object.create(null);
 
 has(o, 'name');
 // => false
+```
 
-// Uses Array methods as functions for any Iterable
-const { filter } = uncouple(Array.prototype);
+I'm also exporting a type to improve your JSDocs and TypeScript modules.
 
-filter(document.querySelectorAll('*'), (e) => e.tagName === 'LINK');
+```ts
+import uncouple, { Uncouple } from 'uncouple';
+
+// Uses Array methods as functions for any Iterable.
+const A: Uncouple<typeof Array.prototype> = uncouple(Array.prototype);
+
+A.filter(document.querySelectorAll('*'), (e) => e.tagName === 'A');
 // => [ <a href="" />, ... ]
 ```
 

@@ -1,16 +1,41 @@
-import reconstruct, { PropertyName } from 'reconstruct-descriptors';
+import reconstruct from 'reconstruct-descriptors';
 
-function isMethod (name: PropertyName, { value }: PropertyDescriptor): boolean {
-  return typeof value === 'function' && typeof name !== 'symbol' && name !== 'constructor';
-}
+/**
+ * Check if property (key & descriptor) is a method.
+ * @param name
+ * @param descriptor
+ */
+const isMethod = (name: PropertyKey, { value }: PropertyDescriptor): boolean => (
+  name !== 'constructor' &&
+  typeof name !== 'symbol' &&
+  typeof value === 'function'
+);
 
+/**
+ * Type definition to match every method or function.
+ */
 type Method = (...args: any[]) => any;
 
-type Uncouple <T extends object, U extends Method> = (instance: T, ...args: any[]) => ReturnType<U>;
+/**
+ * A hi-order type definition to type an uncoupled function.
+ */
+type Uncoupled <T, F> = F extends (...args: infer A) => infer R ? (instance: T, ...args: A) => R : never;
 
-type Uncoupled <T extends object> = { [K in keyof T]: T[K] extends Method ? Uncouple<T, T[K]> : never };
+/**
+ * Uncouple object methods into functions that receives instance and method arguments.
+ */
+export type Uncouple <T> = { [K in keyof T]: T[K] extends Method ? Uncoupled<T, T[K]> : never; };
 
-function uncouple <T extends object> (object: T): Uncoupled<T> {
+/**
+ * Uncouple object methods.
+ * @example ```js
+ * const { filter } = uncouple(Array.prototype);
+ * filter([ 1, 2, 3, 4 ], (value) => value % 2 === 0);
+ * //=> [ 2, 4 ]
+ * ```
+ * @param object - A prototype, namespace of object with methods.
+ */
+function uncouple <T extends object> (object: T): Uncouple<T> {
   return reconstruct(object, (descriptor, name) => isMethod(name, descriptor) && {
     [name]: {
       value: Function.call.bind(descriptor.value),
@@ -18,7 +43,7 @@ function uncouple <T extends object> (object: T): Uncoupled<T> {
       enumerable: true,
       configurable: true
     }
-  }) as Uncoupled<T>;
+  }) as Uncouple<T>;
 }
 
-export { uncouple, uncouple as default, Uncoupled };
+export default uncouple;
