@@ -2994,13 +2994,9 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
-
-object-descriptors@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/object-descriptors/-/object-descriptors-0.1.0.tgz#831195f0fe2a5fa8081ef7f906f4903250607ae1"
 
 object.omit@^2.0.0:
   version "2.0.1"
@@ -3637,19 +3633,6 @@ readdirp@^2.0.0:
     minimatch "^3.0.2"
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
-
-reconstruct-descriptors@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/reconstruct-descriptors/-/reconstruct-descriptors-0.3.0.tgz#fbff69c3b0427b75ae85c122229c9dfd972360ef"
-  dependencies:
-    object-descriptors "^0.1.0"
-    reconstruct "^0.3.0"
-
-reconstruct@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/reconstruct/-/reconstruct-0.3.0.tgz#e9b351b4aec06b2593fb2386c3506bd1c11f5f7b"
-  dependencies:
-    object-assign "^4.1.1"
 
 redent@^1.0.0:
   version "1.0.0"

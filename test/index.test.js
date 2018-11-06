@@ -6,7 +6,7 @@ test('Module exports a uncouple function', (context) => {
 });
 
 test('Uncouple prototype methods', (context) => {
-  const { filter } = uncouple(Array.prototype);
+  const { filter } = uncouple(Array);
   const names = ['Vitor', 'Lucas'];
 
   context.deepEqual(filter(names, (name) => name === 'Vitor'), ['Vitor']);

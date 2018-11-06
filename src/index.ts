@@ -1,49 +1,32 @@
-import reconstruct from 'reconstruct-descriptors';
-
 /**
- * Check if property (key & descriptor) is a method.
- * @param name
- * @param descriptor
+ * It infer property names from an object (T).
  */
-const isMethod = (name: PropertyKey, { value }: PropertyDescriptor): boolean => (
-  name !== 'constructor' &&
-  typeof name !== 'symbol' &&
-  typeof value === 'function'
-);
+type PropertyName <T> = Exclude<keyof T, symbol | number>;
 
 /**
- * Type definition to match every method or function.
+ * Uncouple methods from an instances.
  */
-type Method = (...args: any[]) => any;
+type Uncouple <T> = {
+  [K in PropertyName<T>]: T[K] extends (...args: infer A) => infer R ? (instance: T, ...args: A) => R : never;
+};
 
 /**
- * A hi-order type definition to type an uncoupled function.
- */
-type Uncoupled <T, F> = F extends (...args: infer A) => infer R ? (instance: T, ...args: A) => R : never;
-
-/**
- * Uncouple object methods into functions that receives instance and method arguments.
- */
-export type Uncouple <T> = { [K in keyof T]: T[K] extends Method ? Uncoupled<T, T[K]> : never; };
-
-/**
- * Uncouple object methods.
+ * Uncouple methods from constructor or a class into functions.
  * @example ```js
- * const { filter } = uncouple(Array.prototype);
+ * const { filter } = uncouple(Array);
  * filter([ 1, 2, 3, 4 ], (value) => value % 2 === 0);
  * //=> [ 2, 4 ]
  * ```
- * @param object - A prototype, namespace of object with methods.
+ * @param constructor - A constructor or a class to uncouple it's methods into functions.
  */
-function uncouple <T extends object> (object: T): Uncouple<T> {
-  return reconstruct(object, (descriptor, name) => isMethod(name, descriptor) && {
-    [name]: {
-      value: Function.call.bind(descriptor.value),
-      writable: true,
-      enumerable: true,
-      configurable: true
-    }
-  }) as Uncouple<T>;
-}
+const uncouple = <T> (constructor: { prototype: T }): Uncouple<T> => {
+  const names = Object.getOwnPropertyNames(constructor.prototype) as PropertyName<T>[];
+  return names.reduce((methods, name) => {
+    const value = constructor.prototype[name];
+    if (typeof value === 'function' && typeof name === 'string' && name !== 'constructor')
+      methods[name] = Function.call.bind(value);
+    return methods;
+  }, Object.create(null) as Uncouple<T>);
+};
 
 export default uncouple;
