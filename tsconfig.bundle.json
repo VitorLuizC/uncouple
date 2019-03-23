@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig.json",
+  "compilerOptions": {
+    // Configuration for type definitions.
+    "declaration": true,
+    "declarationDir": "types/"
+  },
+  "include": ["src/"]
+}

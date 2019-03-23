@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-
-    // Settings for generating type definitions.
+    // Configuration for type strictness.
     "strict": true,
-    "declaration": true,
-    "declarationDir": "types/",
 
-    // Settings for module resolution.
-    "module": "es2015",
+    // Configuration for modules.
+    "esModuleInterop": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true
   },
-  "include": ["src/"],
-  "exclude": ["dist/", "types/"]
+  "include": [
+    ".bilirc.ts",
+    "src/",
+    "test/"
+  ]
 }
