@@ -1,32 +1,39 @@
 /**
- * It infer property names from an object (T).
+ * Property name from `T`.
  */
-type PropertyName <T> = Exclude<keyof T, symbol | number>;
+type PropertyNameOf<T> = Extract<keyof T, string>;
 
 /**
- * Uncouple methods from an instances.
+ * Uncoupled methods from `T`.
  */
-type Uncouple <T> = {
-  [K in PropertyName<T>]: T[K] extends (...args: infer A) => infer R ? (instance: T, ...args: A) => R : never;
+type UncoupledMethodsOf<T> = {
+  [K in PropertyNameOf<T>]: T[K] extends (...args: any[]) => any
+    ? (instance: T, ...args: Parameters<T[K]>) => ReturnType<T[K]>
+    : never
 };
 
 /**
- * Uncouple methods from constructor or a class into functions.
+ * Constructor (class) with generic prototype `T`.
+ */
+type Constructor<T> = (new (...args: any[]) => any) & { prototype: T };
+
+/**
+ * Uncouple methods from constructor (class) into functions.
  * @example ```js
  * const { filter } = uncouple(Array);
  * filter([ 1, 2, 3, 4 ], (value) => value % 2 === 0);
  * //=> [ 2, 4 ]
  * ```
- * @param constructor - A constructor or a class to uncouple it's methods into functions.
+ * @param constructor - A constructor (class) to be uncoupled into functions.
  */
-const uncouple = <T> (constructor: { prototype: T }): Uncouple<T> => {
-  const names = Object.getOwnPropertyNames(constructor.prototype) as PropertyName<T>[];
+const uncouple = <T>({ prototype }: Constructor<T>): UncoupledMethodsOf<T> => {
+  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
   return names.reduce((methods, name) => {
-    const value = constructor.prototype[name];
-    if (typeof value === 'function' && typeof name === 'string' && name !== 'constructor')
-      methods[name] = Function.call.bind(value);
+    if (typeof prototype[name] === "function" && name !== "constructor")
+      // @ts-ignore
+      methods[name] = Function.call.bind(prototype[name]);
     return methods;
-  }, Object.create(null) as Uncouple<T>);
+  }, Object.create(null) as UncoupledMethodsOf<T>);
 };
 
 export default uncouple;
