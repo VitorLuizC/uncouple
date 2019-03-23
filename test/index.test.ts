@@ -1,5 +1,5 @@
 import test from 'ava';
-import uncouple from '../';
+import uncouple from '../src';
 
 test('Module exports a uncouple function', (context) => {
   context.is(typeof uncouple, 'function');
@@ -14,11 +14,13 @@ test('Uncouple prototype methods from native constructors', (context) => {
 
 test('Uncouple prototype methods from classes', (context) => {
   class Name {
-    constructor (...names) {
+    names: string[];
+
+    constructor (...names: string[]) {
       this.names = names;
     }
 
-    join () {
+    join (): string {
       return this.names.join(' ');
     }
   }
