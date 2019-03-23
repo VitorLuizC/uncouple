@@ -1,7 +1,7 @@
 {
   "name": "uncouple",
   "version": "0.4.0",
-  "description": "Uncouple prototype methods.",
+  "description": "Uncouple constructors and classes methods into functions.",
   "cdn": "dist/index.umd.min.js",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
