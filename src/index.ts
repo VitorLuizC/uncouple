@@ -1,7 +1,4 @@
-/**
- * Property name from `T`.
- */
-type PropertyNameOf<T> = Extract<keyof T, string>;
+import { KeyOf, getKeys } from "./key";
 
 /**
  * A generic function type.
@@ -12,7 +9,7 @@ type Method = (...args: any[]) => any;
  * Method name from `T`.
  */
 type MethodNameOf<T> = keyof {
-  [K in PropertyNameOf<T>]: T[K] extends Method ? K : never
+  [K in KeyOf<T>]: T[K] extends Method ? K : never
 };
 
 /**
@@ -20,15 +17,15 @@ type MethodNameOf<T> = keyof {
  * @param object
  */
 const isMethodOf = <T>(object: T) => (
-  name: PropertyNameOf<T>
-): name is MethodNameOf<T> =>
-  name !== "constructor" && typeof object[name] === "function";
+  key: KeyOf<T>
+): key is MethodNameOf<T> =>
+  key !== "constructor" && typeof object[key] === "function";
 
 /**
  * Uncoupled methods from `T`.
  */
 type UncoupledMethodsOf<T> = {
-  [K in PropertyNameOf<T>]: T[K] extends Method
+  [K in KeyOf<T>]: T[K] extends Method
     ? (instance: T, ...args: Parameters<T[K]>) => ReturnType<T[K]>
     : never
 };
@@ -47,13 +44,12 @@ type Constructor<T> = { prototype: T } | (T & { prototype: undefined });
  * ```
  * @param constructor - A function constructor, a class or an object to be uncoupled into functions.
  */
-const uncoupleMethods = <T>(
+export const uncoupleMethods = <T>(
   constructor: Constructor<T>
 ): UncoupledMethodsOf<T> => {
   const prototype = (constructor.prototype || constructor) as T;
-  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
   const methods = Object.create(null) as UncoupledMethodsOf<T>;
-  names.filter(isMethodOf(prototype)).forEach(name => {
+  getKeys(prototype).filter(isMethodOf(prototype)).forEach(name => {
     // @ts-ignore
     methods[name] = Function.call.bind(prototype[name]);
   });
@@ -64,7 +60,7 @@ const uncoupleMethods = <T>(
  * Uncoupled methods from `T`.
  */
 type UncoupledMethodsAsCurriesOf<T> = {
-  [K in PropertyNameOf<T>]: T[K] extends Method
+  [K in KeyOf<T>]: T[K] extends Method
     ? (...args: Parameters<T[K]>) => (instance: T) => ReturnType<T[K]>
     : never
 };
@@ -79,17 +75,17 @@ type UncoupledMethodsAsCurriesOf<T> = {
  * ```
  * @param constructor - A function constructor, a class or an object.
  */
-const uncoupleMethodsAsCurries = <T>(
+export const uncoupleMethodsAsCurries = <T>(
   constructor: Constructor<T>
 ): UncoupledMethodsAsCurriesOf<T> => {
   const prototype = (constructor.prototype || constructor) as T;
   const methods = Object.create(null) as UncoupledMethodsAsCurriesOf<T>;
-  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
-  names.filter(isMethodOf(prototype)).forEach(name => {
+  getKeys(prototype).filter(isMethodOf(prototype)).forEach(name => {
     // @ts-ignore
-    methods[name] = (...args) => instance =>
+    methods[name] = function () {
       // @ts-ignore
-      prototype[name].apply(instance, args);
+      return instance => prototype[name].apply(instance, arguments);
+    }
   });
   return methods;
 };
@@ -123,13 +119,12 @@ type UncoupledGettersOf<T> = {
  * ```
  * @param constructor - A function constructor, a class or an object
  */
-const uncoupleGetters = <T>(
+export const uncoupleGetters = <T>(
   constructor: Constructor<T>
 ): UncoupledGettersOf<T> => {
   const prototype = (constructor.prototype || constructor) as T;
   const getters = Object.create(null) as UncoupledGettersOf<T>;
-  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
-  names.forEach(name => {
+  getKeys(prototype).forEach(name => {
     const descriptor = Object.getOwnPropertyDescriptor(prototype, name) || {};
 
     if (typeof descriptor.get === "function")
@@ -167,13 +162,12 @@ type UncoupledSettersOf<T> = {
  * ```
  * @param constructor - A function constructor, a class or an object
  */
-const uncoupleSetters = <T>(
+export const uncoupleSetters = <T>(
   constructor: Constructor<T>
 ): UncoupledSettersOf<T> => {
   const prototype = (constructor.prototype || constructor) as T;
   const setters = Object.create(null) as UncoupledSettersOf<T>;
-  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
-  names.forEach(name => {
+  getKeys(prototype).forEach(name => {
     const descriptor = Object.getOwnPropertyDescriptor(prototype, name) || {};
 
     if (typeof descriptor.set === "function")
