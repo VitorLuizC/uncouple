@@ -34,22 +34,23 @@ type UncoupledMethodsOf<T> = {
 };
 
 /**
- * Constructor (class) with generic prototype `T`.
+ * A function constructor (class) with prototype of `T` or an object of `T`.
  */
-type Constructor<T> = { prototype: T };
+type Constructor<T> = { prototype: T } | (T & { prototype: undefined });
 
 /**
- * Uncouple methods from constructor (class) into functions.
+ * Uncouple methods from function constructor, a class or an object into functions.
  * @example ```js
- * const { filter } = uncouple(Array);
+ * const { filter } = uncoupleMethods(Array);
  * filter([ 1, 2, 3, 4 ], (value) => value % 2 === 0);
  * //=> [ 2, 4 ]
  * ```
- * @param constructor - A constructor (class) to be uncoupled into functions.
+ * @param constructor - A function constructor, a class or an object to be uncoupled into functions.
  */
-const uncoupleMethods = <T>({
-  prototype
-}: Constructor<T>): UncoupledMethodsOf<T> => {
+const uncoupleMethods = <T>(
+  constructor: Constructor<T>
+): UncoupledMethodsOf<T> => {
+  const prototype = (constructor.prototype || constructor) as T;
   const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
   const methods = Object.create(null) as UncoupledMethodsOf<T>;
   names.filter(isMethodOf(prototype)).forEach(name => {
@@ -69,17 +70,19 @@ type UncoupledMethodsAsCurriesOf<T> = {
 };
 
 /**
- * Uncouple methods from constructor (class) into functions.
+ * Uncouple methods from function constructor, a class or an object into functions.
  * @example ```js
- * const { filter } = uncouple(Array);
- * filter([ 1, 2, 3, 4 ], (value) => value % 2 === 0);
+ * const { filter: createFilter } = uncoupleMethodsAsCurries(Array);
+ * const filter((value) => value % 2 === 0);
+ * filter([ 1, 2, 3, 4 ]);
  * //=> [ 2, 4 ]
  * ```
- * @param constructor - A constructor (class) to be uncoupled into functions.
+ * @param constructor - A function constructor, a class or an object.
  */
-const uncoupleMethodsAsCurries = <T>({
-  prototype
-}: Constructor<T>): UncoupledMethodsAsCurriesOf<T> => {
+const uncoupleMethodsAsCurries = <T>(
+  constructor: Constructor<T>
+): UncoupledMethodsAsCurriesOf<T> => {
+  const prototype = (constructor.prototype || constructor) as T;
   const methods = Object.create(null) as UncoupledMethodsAsCurriesOf<T>;
   const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
   names.filter(isMethodOf(prototype)).forEach(name => {
