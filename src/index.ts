@@ -93,3 +93,92 @@ const uncoupleMethodsAsCurries = <T>(
   });
   return methods;
 };
+
+/**
+ * Append prefix to a word and capitalize it.
+ * @param prefix
+ * @param name
+ */
+const prefix = (prefix: string, name: string) =>
+  prefix + (name ? name[0].toUpperCase() + name.substr(1) : "");
+
+/**
+ * Uncoupled getters from `T`.
+ */
+type UncoupledGettersOf<T> = {
+  [name: string]: (instance: T) => any;
+};
+
+/**
+ * Uncouple getters from function constructor, a class or an object into functions.
+ * @example ```js
+ * const { getName } = uncoupleGetters({
+ *   _name: 'Vitor',
+ *   get name () {
+ *     return this._name;
+ *   }
+ * });
+ * getName({ _name: 'Lucas' })
+ * //=> 'Lucas'
+ * ```
+ * @param constructor - A function constructor, a class or an object
+ */
+const uncoupleGetters = <T>(
+  constructor: Constructor<T>
+): UncoupledGettersOf<T> => {
+  const prototype = (constructor.prototype || constructor) as T;
+  const getters = Object.create(null) as UncoupledGettersOf<T>;
+  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
+  names.forEach(name => {
+    const descriptor = Object.getOwnPropertyDescriptor(prototype, name) || {};
+
+    if (typeof descriptor.get === "function")
+      getters[prefix("get", name)] = Function.call.bind(descriptor.get);
+  });
+  return getters;
+};
+
+
+/**
+ * Uncoupled setters from `T`.
+ */
+type UncoupledSettersOf<T> = {
+  [name: string]: (instance: T, value: any) => void;
+};
+
+/**
+ * Uncouple setters from function constructor, a class or an object into functions.
+ * @example ```js
+ * const { setName } = uncoupleGetters({
+ *   _name: 'Vitor',
+ *   set name (name) {
+ *     this._name = name;
+ *   }
+ * });
+ *
+ * const user = {
+ *   _name: 'Vitor'
+ * };
+ *
+ * setName(user, 'Lucas');
+ *
+ * user._name;
+ * //=> 'Lucas'
+ * ```
+ * @param constructor - A function constructor, a class or an object
+ */
+const uncoupleSetters = <T>(
+  constructor: Constructor<T>
+): UncoupledSettersOf<T> => {
+  const prototype = (constructor.prototype || constructor) as T;
+  const setters = Object.create(null) as UncoupledSettersOf<T>;
+  const names = Object.getOwnPropertyNames(prototype) as PropertyNameOf<T>[];
+  names.forEach(name => {
+    const descriptor = Object.getOwnPropertyDescriptor(prototype, name) || {};
+
+    if (typeof descriptor.set === "function")
+      // @ts-ignore
+      setters[prefix("set", name)] = Function.call.bind(descriptor.set);
+  });
+  return setters;
+};
