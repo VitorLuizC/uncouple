@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    // Configuration for JS spec year.
+    "lib": ["es2019"],
+    "target": "es2019",
+
     // Configuration for type strictness.
     "strict": true,
 
