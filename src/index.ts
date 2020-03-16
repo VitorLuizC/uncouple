@@ -1,4 +1,4 @@
-import { KeyOf, getKeys } from "./key";
+import { KeyOf, getKeys } from './key';
 
 /**
  * A generic function type.
@@ -9,17 +9,15 @@ type Method = (...args: any[]) => any;
  * Method name from `T`.
  */
 type MethodNameOf<T> = keyof {
-  [K in KeyOf<T>]: T[K] extends Method ? K : never
+  [K in KeyOf<T>]: T[K] extends Method ? K : never;
 };
 
 /**
  * Curry to check if name is a method name from object, `T`.
  * @param object
  */
-const isMethodOf = <T>(object: T) => (
-  key: KeyOf<T>
-): key is MethodNameOf<T> =>
-  key !== "constructor" && typeof object[key] === "function";
+const isMethodOf = <T>(object: T) => (key: KeyOf<T>): key is MethodNameOf<T> =>
+  key !== 'constructor' && typeof object[key] === 'function';
 
 /**
  * Uncoupled methods from `T`.
@@ -27,7 +25,7 @@ const isMethodOf = <T>(object: T) => (
 type UncoupledMethodsOf<T> = {
   [K in KeyOf<T>]: T[K] extends Method
     ? (instance: T, ...args: Parameters<T[K]>) => ReturnType<T[K]>
-    : never
+    : never;
 };
 
 /**
@@ -49,10 +47,12 @@ export const uncoupleMethods = <T>(
 ): UncoupledMethodsOf<T> => {
   const prototype = (constructor.prototype || constructor) as T;
   const methods = Object.create(null) as UncoupledMethodsOf<T>;
-  getKeys(prototype).filter(isMethodOf(prototype)).forEach(name => {
-    // @ts-ignore
-    methods[name] = Function.call.bind(prototype[name]);
-  });
+  getKeys(prototype)
+    .filter(isMethodOf(prototype))
+    .forEach(name => {
+      // @ts-ignore
+      methods[name] = Function.call.bind(prototype[name]);
+    });
   return methods;
 };
 
@@ -62,7 +62,7 @@ export const uncoupleMethods = <T>(
 type UncoupledMethodsAsCurriesOf<T> = {
   [K in KeyOf<T>]: T[K] extends Method
     ? (...args: Parameters<T[K]>) => (instance: T) => ReturnType<T[K]>
-    : never
+    : never;
 };
 
 /**
@@ -80,13 +80,15 @@ export const uncoupleMethodsAsCurries = <T>(
 ): UncoupledMethodsAsCurriesOf<T> => {
   const prototype = (constructor.prototype || constructor) as T;
   const methods = Object.create(null) as UncoupledMethodsAsCurriesOf<T>;
-  getKeys(prototype).filter(isMethodOf(prototype)).forEach(name => {
-    // @ts-ignore
-    methods[name] = function () {
+  getKeys(prototype)
+    .filter(isMethodOf(prototype))
+    .forEach(name => {
       // @ts-ignore
-      return instance => prototype[name].apply(instance, arguments);
-    }
-  });
+      methods[name] = function() {
+        // @ts-ignore
+        return instance => prototype[name].apply(instance, arguments);
+      };
+    });
   return methods;
 };
 
@@ -96,7 +98,7 @@ export const uncoupleMethodsAsCurries = <T>(
  * @param name
  */
 const prefix = (prefix: string, name: string) =>
-  prefix + (name ? name[0].toUpperCase() + name.substr(1) : "");
+  prefix + (name ? name[0].toUpperCase() + name.substr(1) : '');
 
 /**
  * Uncoupled getters from `T`.
@@ -127,12 +129,11 @@ export const uncoupleGetters = <T>(
   getKeys(prototype).forEach(name => {
     const descriptor = Object.getOwnPropertyDescriptor(prototype, name) || {};
 
-    if (typeof descriptor.get === "function")
-      getters[prefix("get", name)] = Function.call.bind(descriptor.get);
+    if (typeof descriptor.get === 'function')
+      getters[prefix('get', name)] = Function.call.bind(descriptor.get);
   });
   return getters;
 };
-
 
 /**
  * Uncoupled setters from `T`.
@@ -170,9 +171,9 @@ export const uncoupleSetters = <T>(
   getKeys(prototype).forEach(name => {
     const descriptor = Object.getOwnPropertyDescriptor(prototype, name) || {};
 
-    if (typeof descriptor.set === "function")
+    if (typeof descriptor.set === 'function')
       // @ts-ignore
-      setters[prefix("set", name)] = Function.call.bind(descriptor.set);
+      setters[prefix('set', name)] = Function.call.bind(descriptor.set);
   });
   return setters;
 };

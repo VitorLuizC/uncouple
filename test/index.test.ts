@@ -1,21 +1,22 @@
-import test from "ava";
+import test from 'ava';
 import {
   uncoupleMethods,
   uncoupleMethodsAsCurries,
   uncoupleGetters,
   uncoupleSetters
-} from "../src";
+} from '../src';
 
-test("[uncoupleMethods]: Uncouple prototype methods from native constructors", context => {
+test('[uncoupleMethods]: Uncouple prototype methods from native constructors', context => {
   const { filter } = uncoupleMethods(Array);
-  const names = ["Vitor", "Lucas"];
+  const names = ['Vitor', 'Lucas'];
 
-  context.deepEqual(filter(names, (name: string) => name === "Vitor"), [
-    "Vitor"
-  ]);
+  context.deepEqual(
+    filter(names, (name: string) => name === 'Vitor'),
+    ['Vitor']
+  );
 });
 
-test("[uncoupleMethods]: Uncouple prototype methods from classes", context => {
+test('[uncoupleMethods]: Uncouple prototype methods from classes', context => {
   class Name {
     names: string[];
 
@@ -24,27 +25,27 @@ test("[uncoupleMethods]: Uncouple prototype methods from classes", context => {
     }
 
     join(): string {
-      return this.names.join(" ");
+      return this.names.join(' ');
     }
   }
 
   const { join } = uncoupleMethods(Name);
 
-  const name = new Name("Vitor", "Luiz", "Cavalcanti");
+  const name = new Name('Vitor', 'Luiz', 'Cavalcanti');
 
-  context.deepEqual(join(name), "Vitor Luiz Cavalcanti");
+  context.deepEqual(join(name), 'Vitor Luiz Cavalcanti');
 });
 
-test("[uncoupleMethodsAsCurries]: Uncouple prototype methods from native constructors as curries", context => {
+test('[uncoupleMethodsAsCurries]: Uncouple prototype methods from native constructors as curries', context => {
   const { filter } = uncoupleMethodsAsCurries(Array);
-  const names = ["Vitor", "Lucas"];
+  const names = ['Vitor', 'Lucas'];
 
-  context.deepEqual(filter((name: string) => name === "Vitor")(names), [
-    "Vitor"
+  context.deepEqual(filter((name: string) => name === 'Vitor')(names), [
+    'Vitor'
   ]);
 });
 
-test("[uncoupleMethodsAsCurries]: Uncouple prototype methods from classes", context => {
+test('[uncoupleMethodsAsCurries]: Uncouple prototype methods from classes', context => {
   class Name {
     names: string[];
 
@@ -53,18 +54,18 @@ test("[uncoupleMethodsAsCurries]: Uncouple prototype methods from classes", cont
     }
 
     join(): string {
-      return this.names.join(" ");
+      return this.names.join(' ');
     }
   }
 
   const { join } = uncoupleMethodsAsCurries(Name);
 
-  const name = new Name("Vitor", "Luiz", "Cavalcanti");
+  const name = new Name('Vitor', 'Luiz', 'Cavalcanti');
 
-  context.deepEqual(join()(name), "Vitor Luiz Cavalcanti");
+  context.deepEqual(join()(name), 'Vitor Luiz Cavalcanti');
 });
 
-test("[uncoupleGetters]: Uncouple getters as functions", context => {
+test('[uncoupleGetters]: Uncouple getters as functions', context => {
   class Name {
     names: string[];
 
@@ -73,19 +74,19 @@ test("[uncoupleGetters]: Uncouple getters as functions", context => {
     }
 
     get name(): string {
-      return this.names.join(" ");
+      return this.names.join(' ');
     }
   }
 
   const { getName } = uncoupleGetters(Name);
 
   context.deepEqual(
-    getName(new Name("Vitor", "Luiz", "Cavalcanti")),
-    "Vitor Luiz Cavalcanti"
+    getName(new Name('Vitor', 'Luiz', 'Cavalcanti')),
+    'Vitor Luiz Cavalcanti'
   );
 });
 
-test("[uncoupleSetters]: Uncouple setters as functions", context => {
+test('[uncoupleSetters]: Uncouple setters as functions', context => {
   class Name {
     names: string[];
 
@@ -100,9 +101,9 @@ test("[uncoupleSetters]: Uncouple setters as functions", context => {
 
   const { setLastName } = uncoupleSetters(Name);
 
-  const name = new Name("Vitor", "Luiz");
+  const name = new Name('Vitor', 'Luiz');
 
-  setLastName(name, "Cavalcanti");
+  setLastName(name, 'Cavalcanti');
 
-  context.deepEqual(name.names[name.names.length - 1], "Cavalcanti");
+  context.deepEqual(name.names[name.names.length - 1], 'Cavalcanti');
 });

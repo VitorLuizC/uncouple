@@ -31,10 +31,10 @@ This module has an UMD bundle available through JSDelivr and Unpkg CDNs.
 
 <script>
   // UMD module is exposed through the "uncouple" global function.
-  console.log(uncouple)
+  console.log(uncouple);
 
-  var O = uncouple(Object)
-  var isFetchDefined = O.hasOwnProperty(window, 'fetch')
+  var O = uncouple(Object);
+  var isFetchDefined = O.hasOwnProperty(window, 'fetch');
 </script>
 ```
 
@@ -80,7 +80,7 @@ function User(name) {
   this.name = name;
 }
 
-User.prototype.getName = function () {
+User.prototype.getName = function() {
   console.log(this.name);
 };
 
@@ -118,7 +118,7 @@ const { filter } = uncouple(Array);
 const anchors = document.getElementsByTagName('a');
 //=> NodeListOf<HTMLAnchorElement>
 
-const isLink = (anchor) => /^https?:\/\//.test(anchor.href);
+const isLink = anchor => /^https?:\/\//.test(anchor.href);
 
 const links = filter(anchors, isLink);
 //=> Array<HTMLAnchorElement>

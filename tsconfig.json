@@ -12,9 +12,5 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": [
-    ".bilirc.ts",
-    "src/",
-    "test/"
-  ]
+  "include": [".bilirc.ts", "src/", "test/"]
 }
