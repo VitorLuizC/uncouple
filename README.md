@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/VitorLuizC/uncouple.svg?branch=master)](https://travis-ci.org/VitorLuizC/uncouple)
 [![License](https://badgen.net/github/license/VitorLuizC/uncouple)](./LICENSE)
+[![Install size](https://packagephobia.now.sh/badge?p=uncouple)](https://packagephobia.now.sh/result?p=uncouple)
 [![Library minified size](https://badgen.net/bundlephobia/min/uncouple)](https://bundlephobia.com/result?p=uncouple)
 [![Library minified + gzipped size](https://badgen.net/bundlephobia/minzip/uncouple)](https://bundlephobia.com/result?p=uncouple)
 

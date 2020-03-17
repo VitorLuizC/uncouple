@@ -1,6 +1,6 @@
 {
   "name": "uncouple",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Uncouple constructors and classes methods into functions.",
   "sideEffects": false,
   "cdn": "dist/index.umd.min.js",
