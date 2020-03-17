@@ -15,7 +15,6 @@
     "types/"
   ],
   "scripts": {
-    "pretest": "npm run build",
     "test": "ava --no-cache",
     "lint": "prettier **/*.{js,json,md,ts} --check",
     "build": "bili",
@@ -43,11 +42,12 @@
   },
   "homepage": "https://github.com/VitorLuizC/uncouple#readme",
   "devDependencies": {
-    "ava": "^2.1.0",
-    "bili": "^4.8.0",
+    "@ava/babel": "^1.0.1",
+    "ava": "^3.5.0",
+    "bili": "^4.8.1",
     "prettier": "^1.19.1",
-    "rollup-plugin-typescript2": "^0.21.2",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.2"
+    "rollup-plugin-typescript2": "^0.26.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
   }
 }

@@ -12,7 +12,8 @@ const configuration: Configuration = {
     typescript2: {
       clean: true,
       tsconfig: 'tsconfig.bundle.json',
-      useTsconfigDeclarationDir: true
+      useTsconfigDeclarationDir: true,
+      objectHashIgnoreUnknownHack: false
     }
   },
   babel: {
